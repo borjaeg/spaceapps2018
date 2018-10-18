@@ -45,7 +45,6 @@ $(function() {
     savement.addTo(earth);
 
 
-
     $.getJSON("/fires", function(data) {
         var markers = [];
         var features = data.features;
@@ -58,7 +57,16 @@ $(function() {
                 .addTo(earth);
         });
     });
-
+     var getLocation = function(location){
+        $.getJSON("http://www.mapquestapi.com/geocoding/v1/address?key=RvBffXAzY3Wu7GCGYAOuXnsAbZRPu6YA&location=" + location, function(data) {
+            var markers = [];
+            var features = data.features;
+            console.log(data);
+            console.log(data.results[0].locations[0].latLng);
+            earth.setView([data.results[0].locations[0].latLng.lat, data.results[0].locations[0].latLng.lng], 8);
+            
+        });
+        }
     if (annyang) {
 
         var commands = {
@@ -82,7 +90,8 @@ $(function() {
             },
             'cambiar fecha': function() {
                 $("#date_form").show();
-            }
+            },
+            'acércate a *location': getLocation
         };
 
         // Add our commands to annyang
