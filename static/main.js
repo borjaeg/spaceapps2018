@@ -8,13 +8,13 @@ $(function() {
         dateFormat: "yy-mm-dd",
         onSelect: function(dateText) {
             var auxLayers = [];
-           $.each(enabledLayers, function(index, layer){
+            $.each(enabledLayers, function(index, layer) {
                 layer.removeFrom(earth);
                 var new_layer = addLayer(enabledLayersNames[index], dateText);
                 new_layer.addTo(earth);
                 auxLayers.push(new_layer);
             });
-           enabledLayers = auxLayers;
+            enabledLayers = auxLayers;
         }
     });
 
@@ -32,7 +32,7 @@ $(function() {
     var transport = WE.tileLayer('https://tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=ac727444022c46139db9de54fe80bee8', {
         opacity: 1.0
     });
-    //transport.addTo(earth);
+    transport.addTo(earth);
 
     var landscape = WE.tileLayer('https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=ac727444022c46139db9de54fe80bee8', {
         opacity: 1.0
@@ -45,28 +45,16 @@ $(function() {
     savement.addTo(earth);
 
 
-    $.getJSON("/fires", function(data) {
-        var markers = [];
-        var features = data.features;
-        $.each(features, function(feature, val) {
-            WE.marker([val.geometry.coordinates[1], val.geometry.coordinates[0]])
-                .bindPopup('<p>' + val.properties.name + '</br>' + val.properties.value + '</p>', {
-                    maxWidth: 120,
-                    closeButton: true
-                })
-                .addTo(earth);
-        });
-    });
-     var getLocation = function(location){
+    var getLocation = function(location) {
         $.getJSON("http://www.mapquestapi.com/geocoding/v1/address?key=RvBffXAzY3Wu7GCGYAOuXnsAbZRPu6YA&location=" + location, function(data) {
             var markers = [];
             var features = data.features;
             console.log(data);
             console.log(data.results[0].locations[0].latLng);
             earth.setView([data.results[0].locations[0].latLng.lat, data.results[0].locations[0].latLng.lng], 8);
-            
+
         });
-        }
+    }
     if (annyang) {
 
         var commands = {
@@ -88,11 +76,42 @@ $(function() {
                 enabledLayersNames.push('GHRSST_L4_MUR_Sea_Surface_Temperature');
                 layer.addTo(earth);
             },
+            '(muéstrame las) comunicaciones': function() {
+                var transport = WE.tileLayer('https://tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=ac727444022c46139db9de54fe80bee8', {
+                    opacity: 1.0
+                });
+                transport.addTo(earth);
+            },
             'cambiar fecha': function() {
                 $("#date_form").show();
             },
+            'aléjate': function() {
+                earth.setZoom(earth.getZoom() -1);
+            },
+
+            'acércate': function() {
+                earth.setZoom(earth.getZoom() +1);
+            },
+
+            '(muéstrame las) alertas de incendio': function() {
+                $.getJSON("/fires", function(data) {
+                    var markers = [];
+                    var features = data.features;
+                    $.each(features, function(feature, val) {
+                        WE.marker([val.geometry.coordinates[1], val.geometry.coordinates[0]])
+                            .bindPopup('<p>' + val.properties.name + '</br>' + val.properties.value + '</p>', {
+                                maxWidth: 120,
+                                closeButton: true
+                            })
+                            .addTo(earth);
+                    });
+                });
+            },
+
             'acércate a *location': getLocation
         };
+
+
 
         // Add our commands to annyang
         annyang.setLanguage('es-ES');
