@@ -1,10 +1,12 @@
-    function addLayer(layer, date) {
+    function addLayer(layer_name, date) {
+
+        console.log(layer_name, date);
 
         var template =
         '//gibs-{s}.earthdata.nasa.gov/wmts/{projection}/best/' +
         '{layer}/default/{time}/{tileMatrixSet}/{z}/{y}/{x}.png';
 
-        switch (layer) {
+        switch (layer_name) {
             case 'MODIS_Terra_Land_Surface_Temp_Day':
                 var ltemp = WE.tileLayer(template, {
                     layer: 'MODIS_Terra_Land_Surface_Temp_Day',
@@ -71,6 +73,9 @@
                 });
                 return seaTemp;
                 seaTemp.addTo(earth);
+
+            default:
+                console.log('adas');
         }
 
     }
