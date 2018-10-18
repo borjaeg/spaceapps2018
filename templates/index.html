@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/static/main.css">
+    <script src="https://www.webglearth.com/v2/api.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="/static/layers_management.js"></script>
+    <script src="/static/main.js"></script>
+
+    <title>Earth Observation</title>
+</head>
+
+<body>
+    <div style="height:20%">
+        <p>Date: <input type="text" id="datepicker"></p>
+    </div>
+    <form>
+        <input class="checkbox" type="checkbox" name="vehicle1" value="GHRSST_L4_MUR_Sea_Surface_Temperature"> GHRSST_L4_MUR_Sea_Surface_Temperature<br>
+        <input class="checkbox" type="checkbox" name="vehicle2" value="MODIS_Terra_NDVI_8Day"> MODIS_Terra_NDVI_8Day<br>
+        <input class="checkbox" type="checkbox" name="vehicle2" value="MODIS_Terra_Land_Surface_Temp_Day"> MODIS_Terra_Land_Surface_Temp_Day
+    </form>
+    <button id="query">Consulta</button>
+    <div id="earth_div" style="height:600px;"></div>
+</body>
+
+</html>
