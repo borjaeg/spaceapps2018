@@ -9,10 +9,12 @@ $(function() {
         onSelect: function(dateText) {
             var auxLayers = [];
             $.each(enabledLayers, function(index, layer) {
-                layer.removeFrom(earth);
-                var new_layer = addLayer(enabledLayersNames[index], dateText);
-                new_layer.addTo(earth);
-                auxLayers.push(new_layer);
+                if (enabledLayersNames[index]!='base'){
+                    layer.removeFrom(earth);
+                    var new_layer = addLayer(enabledLayersNames[index], dateText);
+                    new_layer.addTo(earth);
+                    auxLayers.push(new_layer);
+                }
             });
             enabledLayers = auxLayers;
         }
@@ -23,13 +25,9 @@ $(function() {
     var earth = new WE.map('earth_div');
     earth.setView([46.8011, 8.2266], 2);
 
-    var toner = WE.tileLayer('http://tile.stamen.com/terrain/{z}/{x}/{y}.png', {
-        attribution: 'Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under CC BY SA.',
-        opacity: 1.0
-    });
-    //toner.addTo(earth);
+    
 
-    var transport = WE.tileLayer('https://tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=ac727444022c46139db9de54fe80bee8', {
+    /*var transport = WE.tileLayer('https://tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=ac727444022c46139db9de54fe80bee8', {
         opacity: 1.0
     });
     transport.addTo(earth);
@@ -42,7 +40,12 @@ $(function() {
     var savement = WE.tileLayer('http://c.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
         opacity: 1.0
     });
-    savement.addTo(earth);
+    savement.addTo(earth);*/
+
+    /*var landscape = WE.tileLayer('https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=ac727444022c46139db9de54fe80bee8', {
+        opacity: 1.0
+    });
+    landscape.addTo(earth);*/
 
 
     var getLocation = function(location) {
@@ -58,6 +61,15 @@ $(function() {
     if (annyang) {
 
         var commands = {
+            'cargar capa base': function() {
+               var toner = WE.tileLayer('http://tile.stamen.com/toner/{z}/{x}/{y}.png', {
+                    attribution: 'Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under CC BY SA.',
+                    opacity: 1.0
+                });
+                toner.addTo(earth);
+                enabledLayers.push(toner);
+                enabledLayersNames.push('base');
+            },
             '(muéstrame la) vegetacion': function() {
                 var layer = addLayer('MODIS_Terra_NDVI_8Day', '2018-10-10');
                 enabledLayers.push(layer);
@@ -86,11 +98,20 @@ $(function() {
                 $("#date_form").show();
             },
             'aléjate': function() {
-                earth.setZoom(earth.getZoom() -1);
+                earth.setZoom(earth.getZoom() - 1);
             },
 
             'acércate': function() {
-                earth.setZoom(earth.getZoom() +1);
+                earth.setZoom(earth.getZoom() + 1);
+            },
+
+            'reiniciar': function() {
+                $("#date_form").hide();
+                $.each(enabledLayers, function(index, layer) {
+                    layer.removeFrom(earth);
+                });
+                earth.setView([46.8011, 8.2266], 2);
+                console.log('hello');
             },
 
             '(muéstrame las) alertas de incendio': function() {
@@ -110,6 +131,8 @@ $(function() {
 
             'acércate a *location': getLocation
         };
+
+        
 
 
 
