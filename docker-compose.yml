@@ -1,0 +1,14 @@
+version: '2'
+services:
+  fire_service:
+    build: ./services
+    ports:
+      - "5001:5001"
+  web:
+    build: ./web
+    ports: 
+      - "5000:5000"
+    depends_on:
+      - fire_service
+
+
