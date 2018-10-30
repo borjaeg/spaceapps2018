@@ -23,7 +23,7 @@ $(function() {
 
     $("#date_form").hide();
 
-    var earth = new WE.map('earth_div', {sky: true});
+    var earth = new WE.map('earth_div');
     earth.setView([46.8011, 8.2266], 2);
     
 
