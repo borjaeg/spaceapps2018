@@ -3,6 +3,7 @@ $(function() {
     var date = '2018-10-10';
     var enabledLayers = [];
     var enabledLayersNames = [];
+    var bounds = [[35.98245136, -112.26379395], [36.13343831, -112.10998535]];
 
     $("#datepicker").datepicker({
         dateFormat: "yy-mm-dd",
@@ -22,9 +23,8 @@ $(function() {
 
     $("#date_form").hide();
 
-    var earth = new WE.map('earth_div');
+    var earth = new WE.map('earth_div', {sky: true});
     earth.setView([46.8011, 8.2266], 2);
-
     
 
     /*var transport = WE.tileLayer('https://tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=ac727444022c46139db9de54fe80bee8', {
@@ -54,7 +54,11 @@ $(function() {
             var features = data.features;
             console.log(data);
             console.log(data.results[0].locations[0].latLng);
-            earth.setView([data.results[0].locations[0].latLng.lat, data.results[0].locations[0].latLng.lng], 8);
+        
+            earth.panInsideBounds([[data.results[0].locations[0].latLng.lat - 3, data.results[0].locations[0].latLng.lng - 3], 
+                            [data.results[0].locations[0].latLng.lat + 3, data.results[0].locations[0].latLng.lng + 3]],
+                             {heading: 0, tilt: 0, duration: 2});
+            //earth.setView([data.results[0].locations[0].latLng.lat, data.results[0].locations[0].latLng.lng], 7);
 
         });
     }
@@ -115,7 +119,7 @@ $(function() {
             },
 
             '(muéstrame las) alertas de incendio': function() {
-                $.getJSON("/fires", function(data) {
+                $.getJSON("http://localhost:5001/fires", function(data) {
                     var markers = [];
                     var features = data.features;
                     $.each(features, function(feature, val) {
@@ -132,10 +136,8 @@ $(function() {
             'acércate a *location': getLocation
         };
 
+
         
-
-
-
         // Add our commands to annyang
         annyang.setLanguage('es-ES');
         annyang.addCommands(commands);
