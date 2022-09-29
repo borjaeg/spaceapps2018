@@ -74,10 +74,22 @@ $(function() {
                 enabledLayers.push(toner);
                 enabledLayersNames.push('base');
             },
-            '(muéstrame la) vegetacion': function() {
+            '(muéstrame la) vegetación': function() {
                 var layer = addLayer('MODIS_Terra_NDVI_8Day', '2018-10-10');
                 enabledLayers.push(layer);
                 enabledLayersNames.push('MODIS_Terra_NDVI_8Day');
+                layer.addTo(earth);
+            },
+            '(muéstrame la) predicción de población': function() {
+                var layer = addLayer('Probabilities_of_Urban_Expansion_2000-2030', '2018-10-10');
+                enabledLayers.push(layer);
+                enabledLayersNames.push('Probabilities_of_Urban_Expansion_2000');
+                layer.addTo(earth);
+            },
+            '(muéstrame los) volcanes': function() {
+                var layer = addLayer('NDH_Volcano_Hazard_Frequency_Distribution_1979-2000', '2018-10-10');
+                enabledLayers.push(layer);
+                enabledLayersNames.push('NDH_Volcano_Hazard_Frequency_Distribution_1979-2000');
                 layer.addTo(earth);
             },
             '(muéstrame la) temperatura': function() {
